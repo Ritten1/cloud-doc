@@ -16,4 +16,5 @@ app.on('ready', () => {
     // 环境判断
     const urlLocation = isDev ? 'http://localhost:3000' : 'dummyUrl';
     mainWindow.loadURL(urlLocation);
+    mainWindow.webContents.openDevTools(); // 打开调试工具
 })

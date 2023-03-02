@@ -1,0 +1,227 @@
+.flex {
+    display: flex;
+    display: -webkit-flex;
+}
+
+.f-fd-r {
+    flex-direction: row;
+}
+
+.f-fd-rr {
+    flex-direction: row-reverse;
+}
+
+.f-fd-c {
+    flex-direction: column;
+}
+
+.f-fd-cr {
+    flex-direction: column-reverse;
+}
+
+.f-fw-n {
+    flex-wrap: nowrap;
+}
+
+.f-fw-w {
+    flex-wrap: wrap;
+}
+
+.f-fw-wr {
+    flex-wrap: wrap-reverse;
+}
+
+.f-jc-fs {
+    justify-content: flex-start;
+}
+
+.f-jc-fe {
+    justify-content: flex-end;
+}
+
+.f-jc-c {
+    justify-content: center;
+}
+
+.f-jc-sb {
+    justify-content: space-between;
+}
+
+.f-jc-se {
+    justify-content: space-evenly;
+}
+
+.f-jc-sa {
+    justify-content: space-around;
+}
+
+.f-ai-fs {
+    align-items: flex-start;
+}
+
+.f-ai-fe {
+    align-items: flex-end;
+}
+
+.f-ai-c {
+    align-items: center;
+}
+
+.f-ai-b {
+    align-items: baseline;
+}
+
+.f-ai-s {
+    align-items: stretch;
+}
+
+.f-ac-fs {
+    align-content: flex-start;
+}
+
+.f-ac-fe {
+    align-content: flex-end;
+}
+
+.f-ac-c {
+    align-content: center;
+}
+
+.f-ac-sb {
+    align-content: space-between;
+}
+
+.f-ac-sa {
+    align-content: space-around;
+}
+
+.f-ac-s {
+    align-content: stretch;
+}
+
+.f-as-a {
+    align-self: auto;
+}
+
+.f-as-fs {
+    align-self: flex-start;
+}
+
+.f-as-fe {
+    align-self: flex-end;
+}
+
+.f-as-c {
+    align-self: center;
+}
+
+.f-as-b {
+    align-self: baseline;
+}
+
+.f-as-s {
+    align-self: stretch;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.fixed {
+    position: fixed;
+}
+
+.sticky {
+    position: sticky;
+    top: 0;
+}
+
+.ta-l {
+    text-align: left;
+}
+
+.ta-c {
+    text-align: center;
+}
+
+.ta-r {
+    text-align: right;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.flex-3 {
+    flex: 3;
+}
+
+.flex-4 {
+    flex: 4;
+}
+
+.flex-5 {
+    flex: 5;
+}
+
+.fd--r {
+    .flex();
+    .f-fd-r();
+}
+
+.fd--c {
+    .flex();
+    .f-fd-c();
+}
+
+.fx--between {
+    .flex();
+    .f-jc-sb();
+}
+
+.fxy--center {
+    .flex();
+    .f-jc-c();
+    .f-ai-c();
+}
+
+.fx--between-center {
+    .flex();
+    .f-jc-sb();
+    .f-ai-c();
+}
+
+.fy--center {
+    .flex();
+    .f-ai-c();
+}
+
+.w100 {
+    width: 100%;
+}
+
+.vw100 {
+    width: 100vw;
+}
+
+.h100 {
+    height: 100%;
+}
+
+.vh100 {
+    height: 100vh;
+}
+
+.single-text-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
