@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './styles.less';
 import FileSearch from './components/FileSearch';
 import FileList from './components/FileList';
+import CreateTabList from './components/CreateTabList';
 import LeftMenuBtn from './components/LeftMenuBtn';
+import { cloneDeep, uniqueId } from 'lodash-es';
 
 const mockData = [
   {
@@ -10,18 +12,21 @@ const mockData = [
     title: 'first post',
     body: 'should be aware of this',
     createTime: 1677004129000,
+    uniqueId: 'file_11',
   },
   {
     id: '2',
     title: 'second post',
     body: '## this is the title',
     createTime: 1677004129000,
+    uniqueId: 'file_12',
   },
   {
     id: '3',
     title: 'wow~syukinmei No.1 fighting!!!',
     body: '## this is the title',
     createTime: 1677004129000,
+    uniqueId: 'file_13',
   },
 ];
 
@@ -63,6 +68,91 @@ function App() {
   useEffect(() => {
     dragControllerDiv();
   }, []);
+
+  //====================================================
+  //1.初始化一个file，将初始化的内容塞入filesList
+
+  const getDefaultFile = () => {
+    return {
+      title: '',
+      body: '',
+      uniqueId: uniqueId('file_'),
+      isNew: true,
+    };
+  };
+
+  const [filesList, setFilesList] = useState([]); //所有文件
+  const [activeFileBak, setactiveFileBak] = useState({}); //当前处于工作区的上一次的备份
+  const [activeFile, setactiveFile] = useState({}); //当前用于编辑的内容
+
+  const __getIndexOfUniqueId = (uniqueId, fileList) => {
+    return fileList.findIndex((i) => {
+      return i.uniqueId === uniqueId;
+    });
+  };
+
+  useEffect(() => {
+    setFilesList(mockData);
+    console.log(activeFileBak, filesList, activeFile, '');
+  }, [filesList, activeFile, activeFileBak, mockData]);
+
+  /**
+   * 将上一次的 activeFile 整理到filesList中 并返回新的 list
+   */
+  const __getAssembledFilesList = (activeFile, filesList) => {
+    let fixedFilesList = cloneDeep(filesList);
+    const _activedFile = cloneDeep(activeFile);
+    /**
+     * 根据uniqueId 找到filesList中对应的index
+     *  使用splice将其替换成activeFile
+     */
+    /**每次整理前 都将_isNew置为false */
+    const _index = __getIndexOfUniqueId(_activedFile.uniqueId, fixedFilesList);
+    if (_index > -1) {
+      _activedFile._isNew = false;
+      fixedFilesList[_index] = _activedFile;
+    }
+    return fixedFilesList;
+  };
+
+  //将最新的file赋给activeFileBak、activeFile 使组件恢复到初始状态
+  const _reInitFileListOfOld = useCallback(
+    (newFile, activeFile, fileList) => {
+      const _fileList = cloneDeep(
+        __getAssembledFilesList(activeFile, fileList)
+      );
+
+      setFilesList(_fileList);
+      setactiveFileBak(newFile);
+      setactiveFile(cloneDeep(newFile));
+    },
+    [__getAssembledFilesList]
+  );
+
+  //相当于初始化，重组最新的fileList
+  const initNewFile = useCallback(() => {
+    const _defaultFile = getDefaultFile();
+    _reInitFileListOfOld(_defaultFile, activeFile, [
+      ...filesList,
+      _defaultFile,
+    ]);
+  }, [activeFile, filesList, _reInitFileListOfOld]);
+
+  //切换tab
+  const changeActivedUniqueId = useCallback(
+    (uniqueId) => {
+      const _currentFile = filesList.find((i) => i.uniqueId === uniqueId);
+      if (_currentFile) {
+        _reInitFileListOfOld(_currentFile, activeFile, filesList);
+      }
+    },
+    [filesList, activeFile, _reInitFileListOfOld]
+  );
+
+  const addNewFile = useCallback(() => {
+    initNewFile();
+  }, [initNewFile]);
+
   return (
     <div className="app-container vh100 flex">
       <div className="left-menu fd--c pa-little">
@@ -81,14 +171,21 @@ function App() {
           }}
         />
         <LeftMenuBtn
-          onNewFile={() => console.log('onNewFile')}
+          onNewFile={() => addNewFile()}
           onImportFile={() => console.log('onImportFile')}
         />
       </div>
       <div className="resize fxy--center" title="收缩侧边栏">
         ⋮
       </div>
-      <div className="right-main">内容区域</div>
+      <div className="right-main">
+        <CreateTabList
+          dataList={mockData}
+          setActive={changeActivedUniqueId}
+          activedUniqueId={activeFileBak.uniqueId}
+        />
+        <div>{activeFileBak.title}</div>
+      </div>
     </div>
   );
 }

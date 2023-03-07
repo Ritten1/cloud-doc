@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Button, Input } from "antd";
-import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
-import useKeyPress from "../hooks/useKeyPress";
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, Input } from 'antd';
+import { SearchOutlined, CloseOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
+import useKeyPress from '../hooks/useKeyPress';
 
 const FileSearch = ({ title, onFileSearch }) => {
   const [inputActive, setInputActive] = useState(false); // 输入框状态
-  const [value, setValue] = useState(""); // 输入框文案
+  const [value, setValue] = useState(''); // 输入框文案
 
   const node = useRef(null);
 
@@ -15,7 +15,7 @@ const FileSearch = ({ title, onFileSearch }) => {
 
   const closeSearch = () => {
     setInputActive(false);
-    setValue("");
+    setValue('');
   };
 
   useEffect(() => {
@@ -70,7 +70,7 @@ FileSearch.propTypes = {
 };
 
 FileSearch.defaultProps = {
-  title: "hello world",
+  title: 'hello world',
 };
 
 export default FileSearch;
